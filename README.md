@@ -10,3 +10,5 @@ mvn spring-boot:run
 - MailSever: http://localhost:8080/
 
 - emp_managment: http://localhost:9090/addEmployee
+
+- actuator admin server : http://localhost:8093
