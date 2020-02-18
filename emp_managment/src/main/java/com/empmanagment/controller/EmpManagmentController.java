@@ -1,6 +1,7 @@
 package com.empmanagment.controller;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,6 +61,7 @@ public class EmpManagmentController {
 	public String addEmployee(@RequestBody EmployeeBean empBean){
 		System.out.println("IN POST");
 		 Application application = eurekaClient.getApplication(employeeSearchServiceId);
+		 System.out.println("Size:="+application.getInstances().size());
 	        InstanceInfo instanceInfo = application.getInstances().get(0);
 	        String url = "http://" + instanceInfo.getIPAddr() + ":" + instanceInfo.getPort() + "/" + "sendMail";
 	        System.out.println("URL" + url);
@@ -91,8 +95,16 @@ public class EmpManagmentController {
 	    };
 	}
 	@RequestMapping(value = "/getEmployee", method = RequestMethod.GET)
-	public String getEmployee(){
+	public List<EmployeeBean> getEmployee(){
 		System.out.println("IN GET");
-		return "suceess";
+		return employeeService.getEmployee();
+		
+	}
+	
+	@GetMapping(value="/getEmployeeByName/{name}")
+	public EmployeeBean getEmployeeByName(@PathVariable String name){
+		
+		return employeeService.getEmployeeByName(name);
+		
 	}
 }
